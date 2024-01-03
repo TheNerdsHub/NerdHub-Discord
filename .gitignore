@@ -1,9 +1,6 @@
 .vscode/
 *.code-workspace
 
-# Secrets file
-config.json
-
 # Local History for Visual Studio Code
 .history/
 
@@ -11,7 +8,7 @@ config.json
 node_modules/
 
 # dotenv environment variables file
-.env
+#.env
 
 # Logs
 logs
