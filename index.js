@@ -5,8 +5,6 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, ButtonBuilder, ButtonStyle, Collection, Events, GatewayIntentBits, SlashCommandBuilder } = require('discord.js');
 
-client.commands = new Collection();
-
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
