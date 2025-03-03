@@ -1,17 +1,22 @@
 {
   "name": "nerdhub-discord",
   "version": "1.0.0",
-  "description": "The discord bot for NerdHub.",
+  "description": "Discord bot for NerdHub",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheNerdsHub/NerdHub-Discord.git"
+  },
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheNerdsHub/NerdHub-Discord/issues"
+  },
+  "homepage": "https://github.com/TheNerdsHub/NerdHub-Discord#readme",
   "dependencies": {
-    "discord.js": "^14.14.1",
-    "dotenv": "^16.3.1",
-    "mongoose": "^8.0.3"
+    "discord.js": "^14.18.0"
   }
 }
