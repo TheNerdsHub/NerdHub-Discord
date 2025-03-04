@@ -1,8 +1,10 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits, MessageFlags } = require('discord.js');
+const mongoose = require('mongoose');
 
 const token = process.env.DISCORD_TOKEN;
+const mongoUri = process.env.MONGO_URI;
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -24,8 +26,17 @@ for (const folder of commandFolders) {
     }
 }
 
-client.once(Events.ClientReady, readyClient => {
+client.once(Events.ClientReady, async readyClient => {
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+    try {
+        await mongoose.connect(mongoUri, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        console.log('Connected to MongoDB');
+    } catch (error) {
+        console.error('Error connecting to MongoDB', error);
+    }
 });
 
 client.on(Events.InteractionCreate, async interaction => {
