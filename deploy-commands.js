@@ -4,10 +4,10 @@ const path = require('node:path');
 
 const args = process.argv.slice(2);
 const clientId = args[0]; // process.env.CLIENT_ID;
-const token = args[1]; // process.env.DISCORD_TOKEN;
+const token = process.env.DISCORD_TOKEN;
 
 if (!clientId || !token) {
-    console.error('Error: clientId and token must be provided as command line arguments.');
+    console.error('Error: clientId must be provided as a command line argument.');
     process.exit(1);
 }
 
