@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { Interaction } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 require('dotenv').config();
 
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
                     { name: 'Linux', value: 'linux' },
                 )),
     async execute(interaction) {
-        await interaction.deferReply(); // Defer the reply to allow time for processing
+        await interaction.deferReply();
 
         const genre = interaction.options.getString('genre');
         const platform = interaction.options.getString('platform');
@@ -52,19 +52,52 @@ module.exports = {
             // Pick a random game
             const randomGame = games[Math.floor(Math.random() * games.length)];
 
+            // Fetch usernames for the ownedBy.steamId field
+            const steamIds = randomGame.ownedBy?.steamId || [];
+            let usernames = {};
+            if (steamIds.length > 0) {
+                const usernamesResponse = await fetch(`${process.env.BACKEND_URL}/api/Games/get-usernames`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(steamIds),
+                });
+
+                if (usernamesResponse.ok) {
+                    usernames = await usernamesResponse.json();
+                } else {
+                    console.warn('Failed to fetch usernames:', await usernamesResponse.text());
+                }
+            }
+
             // Extract relevant details
             const appId = randomGame.appid;
-            const platforms = Object.keys(randomGame.platforms).filter(key => randomGame.platforms[key]);
+            const platforms = Object.keys(randomGame.platforms)
+                .filter(key => randomGame.platforms[key])
+                .map(platform => platform.charAt(0).toUpperCase() + platform.slice(1)); // Capitalize the first letter
             const genreDescriptions = randomGame.genres?.map(genre => genre.description).join(', ') || "Unknown";
 
-            // Reply with the random game details
-            await interaction.editReply(
-                `🎮 Random Game: **${randomGame.name}**\n` +
-                `App ID: ${appId}\n` +
-                `Platforms: ${platforms.join(', ')}\n` +
-                `Genres: ${genreDescriptions}\n` +
-                `Description: ${randomGame.shortDescription}`
-            );
+            // Format the ownedBy field with usernames
+            const ownedByDetails = steamIds.map(id => `${id} - ${usernames[id]?.nickname || usernames[id]?.username || "Unknown User"}`).join('\n') || "Unknown";
+
+            // Create an embed for the random game details
+            const embed = new EmbedBuilder()
+                .setTitle(`🎮 ${randomGame.name}`)
+                .setURL(`https://store.steampowered.com/app/${randomGame.appid}`)
+                .setDescription(randomGame.shortDescription || "No description available.")
+                .addFields(
+                    { name: 'Price', value: randomGame.priceOverview?.finalFormatted || (randomGame.isFree ? "Free" : "N/A"), inline: true },
+                    { name: 'App ID', value: appId.toString(), inline: true },
+                    { name: 'Platforms', value: platforms.join(', ') || "Unknown", inline: true },
+                    { name: 'Genres', value: genreDescriptions, inline: true },
+                    { name: 'Owned By', value: ownedByDetails, inline: false },
+                )
+                .setColor('#0099ff') // Set a color for the embed
+                .setFooter({ text: 'Powered by NerdHub' })
+                .setTimestamp()
+                .setImage(randomGame.headerImage);
+
+            // Reply with the embed
+            await interaction.editReply({ embeds: [embed] });
         } catch (error) {
             console.error(error);
             await interaction.editReply('An error occurred while fetching a random game.');
