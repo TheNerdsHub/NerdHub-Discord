@@ -1,13 +1,15 @@
 const { REST, Routes } = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');
+require('dotenv').config();
 
 const args = process.argv.slice(2);
 const clientId = args[0]; // process.env.CLIENT_ID;
-const token = args[1]; // process.env.DISCORD_TOKEN;
+const guildId = args[1]; // process.env.GUILD_ID;
+const token = process.env.DISCORD_TOKEN;
 
 if (!clientId || !token) {
-    console.error('Error: clientId and token must be provided as command line arguments.');
+    console.error('Error: clientId must be provided as a command line argument.');
     process.exit(1);
 }
 
@@ -42,7 +44,8 @@ const rest = new REST().setToken(token);
 
 		// The put method is used to fully refresh all commands in the guild with the current set
 		const data = await rest.put(
-			Routes.applicationCommands(clientId),
+			Routes.applicationGuildCommands(clientId, guildId),
+			//Routes.applicationCommands(clientId),
 			{ body: commands },
 		);
 
@@ -52,11 +55,3 @@ const rest = new REST().setToken(token);
 		console.error(error);
 	}
 })();
-
-
-// If you need to delete a command, you can do so with the delete method
-/*(async () => {
-	rest.delete(Routes.applicationCommand(clientId, 'commandId'))
-	.then(() => console.log('Successfully deleted application command'))
-	.catch(console.error);
-})();*/
