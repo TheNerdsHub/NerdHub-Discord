@@ -55,14 +55,14 @@ module.exports = {
             // Extract relevant details
             const appId = randomGame.appid;
             const platforms = Object.keys(randomGame.platforms).filter(key => randomGame.platforms[key]);
-            const genreDescription = randomGame.genres.find(genre => genre.genreId === "1")?.description || "Unknown";
+            const genreDescriptions = randomGame.genres?.map(genre => genre.description).join(', ') || "Unknown";
 
             // Reply with the random game details
             await interaction.editReply(
                 `🎮 Random Game: **${randomGame.name}**\n` +
                 `App ID: ${appId}\n` +
                 `Platforms: ${platforms.join(', ')}\n` +
-                `Genre: ${genreDescription}\n` +
+                `Genres: ${genreDescriptions}\n` +
                 `Description: ${randomGame.shortDescription}`
             );
         } catch (error) {
