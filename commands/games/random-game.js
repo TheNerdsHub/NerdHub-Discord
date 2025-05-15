@@ -77,7 +77,7 @@ module.exports = {
             const genreDescriptions = randomGame.genres?.map(genre => genre.description).join(', ') || "Unknown";
 
             // Format the ownedBy field with usernames
-            const ownedByDetails = steamIds.map(id => `${id} - ${usernames[id]?.nickname || usernames[id]?.username || "Unknown User"}`).join('\n') || "Unknown";
+            const ownedByDetails = steamIds.map(id => `${usernames[id]?.nickname || usernames[id]?.username || "Unknown User"}`).join(', ') || "Unknown";
 
             // Create an embed for the random game details
             const embed = new EmbedBuilder()
