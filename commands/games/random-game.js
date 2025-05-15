@@ -31,13 +31,11 @@ module.exports = {
         const genre = interaction.options.getString('genre');
         const platform = interaction.options.getString('platform');
 
-        // Build the query parameters based on the provided options
         const queryParams = new URLSearchParams();
         if (genre) queryParams.append('genre', genre);
         if (platform) queryParams.append('platform', platform);
 
         try {
-            // Fetch all games from the backend
             const response = await fetch(`${process.env.BACKEND_URL}/api/games?${queryParams.toString()}`);
             if (!response.ok) {
                 throw new Error(`Failed to fetch games: ${response.statusText}`);
@@ -49,10 +47,8 @@ module.exports = {
                 return;
             }
 
-            // Pick a random game
             const randomGame = games[Math.floor(Math.random() * games.length)];
 
-            // Fetch usernames for the ownedBy.steamId field
             const steamIds = randomGame.ownedBy?.steamId || [];
             let usernames = {};
             if (steamIds.length > 0) {
@@ -69,17 +65,17 @@ module.exports = {
                 }
             }
 
-            // Extract relevant details
             const appId = randomGame.appid;
             const platforms = Object.keys(randomGame.platforms)
                 .filter(key => randomGame.platforms[key])
-                .map(platform => platform.charAt(0).toUpperCase() + platform.slice(1)); // Capitalize the first letter
+                .map(platform => platform.charAt(0).toUpperCase() + platform.slice(1));
             const genreDescriptions = randomGame.genres?.map(genre => genre.description).join(', ') || "Unknown";
 
-            // Format the ownedBy field with usernames
-            const ownedByDetails = steamIds.map(id => `${usernames[id]?.nickname || usernames[id]?.username || "Unknown User"}`).join(', ') || "Unknown";
+            const ownedByDetails = steamIds
+                .map(id => usernames[id]?.nickname || usernames[id]?.username || "Unknown User")
+                .sort((a, b) => a.localeCompare(b))
+                .join(', ') || "Unknown";
 
-            // Create an embed for the random game details
             const embed = new EmbedBuilder()
                 .setTitle(`🎮 ${randomGame.name}`)
                 .setURL(`https://store.steampowered.com/app/${randomGame.appid}`)
@@ -91,12 +87,11 @@ module.exports = {
                     { name: 'Genres', value: genreDescriptions, inline: true },
                     { name: 'Owned By', value: ownedByDetails, inline: false },
                 )
-                .setColor('#0099ff') // Set a color for the embed
+                .setColor('#0099ff')
                 .setFooter({ text: 'Powered by NerdHub' })
                 .setTimestamp()
                 .setImage(randomGame.headerImage);
 
-            // Reply with the embed
             await interaction.editReply({ embeds: [embed] });
         } catch (error) {
             console.error(error);

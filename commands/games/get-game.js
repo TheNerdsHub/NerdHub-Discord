@@ -16,7 +16,6 @@ module.exports = {
         const appid = interaction.options.getInteger('appid');
 
         try {
-            // Fetch the game details from the backend
             const response = await fetch(`${process.env.BACKEND_URL}/api/Games/${appid}`);
             if (!response.ok) {
                 throw new Error(`Failed to fetch game: ${response.statusText}`);
@@ -28,7 +27,6 @@ module.exports = {
                 return;
             }
 
-            // Fetch usernames for the ownedBy.steamId field
             const steamIds = game.ownedBy?.steamId || [];
             let usernames = {};
             if (steamIds.length > 0) {
@@ -45,16 +43,16 @@ module.exports = {
                 }
             }
 
-            // Extract relevant details
             const platforms = Object.keys(game.platforms)
                 .filter(key => game.platforms[key])
                 .map(platform => platform.charAt(0).toUpperCase() + platform.slice(1)); // Capitalize the first letter
             const genreDescriptions = game.genres?.map(genre => genre.description).join(', ') || "Unknown";
 
-            // Format the ownedBy field with usernames
-            const ownedByDetails = steamIds.map(id => `${usernames[id]?.nickname || usernames[id]?.username || "Unknown User"}`).join(', ') || "Unknown";
+            const ownedByDetails = steamIds
+                .map(id => usernames[id]?.nickname || usernames[id]?.username || "Unknown User")
+                .sort((a, b) => a.localeCompare(b))
+                .join(', ') || "Unknown";
 
-            // Create an embed for the game details
             const embed = new EmbedBuilder()
                 .setTitle(`🎮 ${game.name}`)
                 .setURL(`https://store.steampowered.com/app/${game.appid}`)
@@ -66,12 +64,11 @@ module.exports = {
                     { name: 'Genres', value: genreDescriptions, inline: true },
                     { name: 'Owned By', value: ownedByDetails, inline: false },
                 )
-                .setColor('#0099ff') // Set a color for the embed
+                .setColor('#0099ff')
                 .setFooter({ text: 'Powered by NerdHub' })
                 .setTimestamp()
                 .setImage(game.headerImage);
 
-            // Reply with the embed
             await interaction.editReply({ embeds: [embed] });
         } catch (error) {
             console.error(error);
