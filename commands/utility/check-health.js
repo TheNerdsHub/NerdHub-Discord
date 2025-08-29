@@ -4,7 +4,7 @@ require('dotenv').config();
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('connection-status')
+        .setName('check-health')
         .setDescription('Check the connection status between the Discord bot and NerdHub backend.'),
     async execute(interaction) {
         await interaction.deferReply();
