@@ -3,14 +3,14 @@ require('dotenv').config();
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('random-quote')
-        .setDescription('Get a random quote from the collection.'),
+        .setName('quote-of-the-day')
+        .setDescription('Get the quote of the day.'),
     
     async execute(interaction) {
         await interaction.deferReply();
         
         try {
-            const response = await fetch(`${process.env.BACKEND_URL}/api/Quotes/random`);
+            const response = await fetch(`${process.env.BACKEND_URL}/api/Quotes/daily`);
             
             if (!response.ok) {
                 if (response.status === 404) {
@@ -23,21 +23,21 @@ module.exports = {
             const quote = await response.json();
             
             const embed = new EmbedBuilder()
-                .setTitle('🎲 Random Quote')
+                .setTitle('📅 Quote of the Day')
                 .setDescription(`"${quote.quoteText}"`)
                 .addFields(
                     { name: '🗣️ Quoted Person(s)', value: quote.quotedPersons.join(', '), inline: true },
                     { name: '📝 Submitted by', value: quote.submitter, inline: true },
                     { name: '📅 Date', value: new Date(quote.timestamp).toLocaleDateString(), inline: true }
                 )
-                .setColor('#0099ff')
-                .setFooter({ text: 'NerdHub Quotes' })
+                .setColor('#ffd700')
+                .setFooter({ text: 'NerdHub Quotes • Same quote all day!' })
                 .setTimestamp();
             
             await interaction.editReply({ embeds: [embed] });
         } catch (error) {
-            console.error('Error fetching random quote:', error);
-            await interaction.editReply('An error occurred while fetching a random quote.');
+            console.error('Error fetching quote of the day:', error);
+            await interaction.editReply('An error occurred while fetching the quote of the day.');
         }
     },
 };

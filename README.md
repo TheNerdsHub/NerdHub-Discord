@@ -30,8 +30,6 @@ This repository contains the Discord bot for the NerdHub application, built with
     ```
     DISCORD_TOKEN="your-discord-token-here"
     MONGO_URI="your-mongo-connection-string-here"
-    APPLICATION_ID="your-application-id-here"
-    GUILD_ID="your-guild-id-here"
     ```
 
 ### Running Locally

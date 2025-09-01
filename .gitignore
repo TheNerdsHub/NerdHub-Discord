@@ -134,3 +134,9 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Configuration files
+config.json
+config/
+*.config.json
+.env.local
