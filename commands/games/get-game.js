@@ -31,7 +31,7 @@ module.exports = {
 
             if (appid) {
                 // Search by App ID - direct API call
-                const response = await fetch(`${process.env.BACKEND_URL}/api/Games/${appid}`);
+                const response = await fetch(`${process.env.API_URL_INTERNAL}/api/Games/${appid}`);
                 if (!response.ok) {
                     throw new Error(`Failed to fetch game: ${response.statusText}`);
                 }
@@ -43,7 +43,7 @@ module.exports = {
                 }
             } else {
                 // Search by name - fetch all games and search
-                const response = await fetch(`${process.env.BACKEND_URL}/api/Games`);
+                const response = await fetch(`${process.env.API_URL_INTERNAL}/api/Games`);
                 if (!response.ok) {
                     throw new Error(`Failed to fetch games: ${response.statusText}`);
                 }
@@ -90,7 +90,7 @@ module.exports = {
             const steamIds = game.ownedBy?.steamId || [];
             let usernames = {};
             if (steamIds.length > 0) {
-                const usernamesResponse = await fetch(`${process.env.BACKEND_URL}/api/Games/get-usernames`, {
+                const usernamesResponse = await fetch(`${process.env.API_URL_INTERNAL}/api/Games/get-usernames`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(steamIds),

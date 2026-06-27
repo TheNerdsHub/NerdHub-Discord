@@ -13,7 +13,7 @@ module.exports = {
             const startTime = Date.now();
             
             // Test connection to backend health endpoint
-            const response = await fetch(`${process.env.BACKEND_URL}/api/Version/health`, {
+            const response = await fetch(`${process.env.API_URL_INTERNAL}/api/Version/health`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
                 timeout: 5000 // 5 second timeout
@@ -29,7 +29,7 @@ module.exports = {
                     .setTitle('✅ Connection Status: Healthy')
                     .setDescription('Successfully connected to NerdHub backend!')
                     .addFields(
-                        { name: '🌐 Backend URL', value: process.env.BACKEND_URL, inline: true },
+                        { name: '🌐 Backend URL', value: process.env.API_URL_INTERNAL, inline: true },
                         { name: '⏱️ Response Time', value: `${responseTime}ms`, inline: true },
                         { name: '📊 Status Code', value: response.status.toString(), inline: true },
                         { name: '🕐 Backend Timestamp', value: new Date(healthData.timestamp).toLocaleString(), inline: true },
@@ -67,7 +67,7 @@ module.exports = {
                 .setTitle('❌ Connection Status: Unhealthy')
                 .setDescription('Failed to connect to NerdHub backend!')
                 .addFields(
-                    { name: '🌐 Backend URL', value: process.env.BACKEND_URL || 'Not configured', inline: true },
+                    { name: '🌐 Backend URL', value: process.env.API_URL_INTERNAL || 'Not configured', inline: true },
                     { name: '📊 Status Code', value: statusCode, inline: true },
                     { name: '❗ Error', value: errorMessage, inline: false },
                     { name: '🔧 Troubleshooting', value: '• Check if backend is running\n• Verify BACKEND_URL in .env\n• Check network connectivity', inline: false }

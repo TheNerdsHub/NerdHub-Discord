@@ -34,7 +34,7 @@ module.exports = {
 
         try {
             // Fetch user mappings early as we'll need them for all scenarios
-            const userMappingsResponse = await fetch(`${process.env.BACKEND_URL}/api/Games/get-all-usernames`);
+            const userMappingsResponse = await fetch(`${process.env.API_URL_INTERNAL}/api/Games/get-all-usernames`);
             if (!userMappingsResponse.ok) {
                 throw new Error('Failed to fetch user mappings');
             }
@@ -125,7 +125,7 @@ module.exports = {
             }
 
             // Fetch all games
-            const gamesResponse = await fetch(`${process.env.BACKEND_URL}/api/Games`);
+            const gamesResponse = await fetch(`${process.env.API_URL_INTERNAL}/api/Games`);
             if (!gamesResponse.ok) {
                 throw new Error('Failed to fetch games from database');
             }

@@ -36,7 +36,7 @@ module.exports = {
         if (platform) queryParams.append('platform', platform);
 
         try {
-            const response = await fetch(`${process.env.BACKEND_URL}/api/games?${queryParams.toString()}`);
+            const response = await fetch(`${process.env.API_URL_INTERNAL}/api/games?${queryParams.toString()}`);
             if (!response.ok) {
                 throw new Error(`Failed to fetch games: ${response.statusText}`);
             }
@@ -52,7 +52,7 @@ module.exports = {
             const steamIds = randomGame.ownedBy?.steamId || [];
             let usernames = {};
             if (steamIds.length > 0) {
-                const usernamesResponse = await fetch(`${process.env.BACKEND_URL}/api/Games/get-usernames`, {
+                const usernamesResponse = await fetch(`${process.env.API_URL_INTERNAL}/api/Games/get-usernames`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(steamIds),

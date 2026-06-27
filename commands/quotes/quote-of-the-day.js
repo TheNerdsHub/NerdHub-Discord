@@ -10,7 +10,7 @@ module.exports = {
         await interaction.deferReply();
         
         try {
-            const response = await fetch(`${process.env.BACKEND_URL}/api/Quotes/daily`);
+            const response = await fetch(`${process.env.API_URL_INTERNAL}/api/Quotes/daily`);
             
             if (!response.ok) {
                 if (response.status === 404) {

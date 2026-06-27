@@ -49,7 +49,7 @@ module.exports = {
         }
 
         try {
-            const response = await fetch(`${process.env.BACKEND_URL}/api/Games/add-or-update-user-mapping`, {
+            const response = await fetch(`${process.env.API_URL_INTERNAL}/api/Games/add-or-update-user-mapping`, {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',

@@ -3,7 +3,7 @@ const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits, MessageFlags } = require('discord.js');
 require('dotenv').config();
 
-const token = process.env.DISCORD_TOKEN;
+const token = process.env.DISCORD_BOT_TOKEN;
 
 const client = new Client({ 
     intents: [
@@ -36,7 +36,7 @@ for (const folder of commandFolders) {
 // Load quote monitoring configuration (supports both single channels and categories)
 async function loadQuoteMonitoringConfig(guildId) {
     try {
-        const response = await fetch(`${process.env.BACKEND_URL}/api/QuoteCategories/guild/${guildId}`);
+        const response = await fetch(`${process.env.API_URL_INTERNAL}/api/QuoteCategories/guild/${guildId}`);
         
         if (response.ok) {
             const config = await response.json();
@@ -143,7 +143,7 @@ async function handleQuoteMessage(message) {
             timestamp: new Date().toISOString()
         };
         
-        const response = await fetch(`${process.env.BACKEND_URL}/api/Quotes`, {
+        const response = await fetch(`${process.env.API_URL_INTERNAL}/api/Quotes`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

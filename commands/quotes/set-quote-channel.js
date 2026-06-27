@@ -32,7 +32,7 @@ module.exports = {
                     categoryName: channel.name
                 };
                 
-                const response = await fetch(`${process.env.BACKEND_URL}/api/QuoteCategories`, {
+                const response = await fetch(`${process.env.API_URL_INTERNAL}/api/QuoteCategories`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ module.exports = {
                     categoryName: `#${channel.name}` // Prefix with # to indicate it's a single channel
                 };
                 
-                const response = await fetch(`${process.env.BACKEND_URL}/api/QuoteCategories`, {
+                const response = await fetch(`${process.env.API_URL_INTERNAL}/api/QuoteCategories`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

@@ -12,7 +12,7 @@ module.exports = {
         await interaction.deferReply({ ephemeral: true });
         
         try {
-            const response = await fetch(`${process.env.BACKEND_URL}/api/QuoteCategories/guild/${interaction.guildId}`);
+            const response = await fetch(`${process.env.API_URL_INTERNAL}/api/QuoteCategories/guild/${interaction.guildId}`);
             
             if (response.ok) {
                 const config = await response.json();

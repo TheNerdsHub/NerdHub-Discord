@@ -6,7 +6,7 @@ require('dotenv').config();
 const args = process.argv.slice(2);
 const clientId = args[0]; // process.env.CLIENT_ID;
 const guildId = args[1]; // process.env.GUILD_ID;
-const token = process.env.DISCORD_TOKEN;
+const token = process.env.DISCORD_BOT_TOKEN;
 
 if (!clientId || !token) {
     console.error('Error: clientId must be provided as a command line argument.');
