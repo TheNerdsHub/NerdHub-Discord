@@ -28,8 +28,8 @@ This repository contains the Discord bot for the NerdHub application, built with
 1.  Create a `.env` file in the root of the project.
 2.  Add the following environment variables to the `.env` file:
     ```
-    DISCORD_TOKEN="your-discord-token-here"
-    MONGO_URI="your-mongo-connection-string-here"
+    DISCORD_BOT_TOKEN="your-discord-bot-token-here"
+    API_URL_INTERNAL=http://localhost:5000
     ```
 
 ### Running Locally
