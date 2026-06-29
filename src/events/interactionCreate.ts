@@ -5,10 +5,10 @@ import { logger } from '../utils/logger.js';
 
 const EPHEMERAL = 64;
 
-export const name = Events.InteractionCreate;
-export const once = false;
-
-export async function execute(interaction: Interaction): Promise<void> {
+export default {
+  name: Events.InteractionCreate,
+  once: false,
+  async execute(interaction: Interaction): Promise<void> {
   if (!interaction.isChatInputCommand()) return;
 
   const command = interaction.client.commands.get(interaction.commandName);
@@ -41,3 +41,4 @@ export async function execute(interaction: Interaction): Promise<void> {
     }
   }
 }
+};

@@ -1,6 +1,6 @@
 import { readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { REST, Routes } from 'discord.js';
 import 'dotenv/config';
 import { logger } from './utils/logger.js';
@@ -29,7 +29,7 @@ for (const folder of categoryFolders) {
 
   for (const file of commandFiles) {
     const filePath = join(categoryPath, file);
-    const commandModule = (await import(filePath)) as { default: unknown };
+    const commandModule = (await import(pathToFileURL(filePath).href)) as { default: unknown };
     const command = commandModule.default as Command;
 
     if (command && typeof command === 'object' && 'data' in command && 'execute' in command) {

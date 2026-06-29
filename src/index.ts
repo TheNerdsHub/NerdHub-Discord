@@ -23,6 +23,6 @@ async function main(): Promise<void> {
 }
 
 main().catch((error) => {
-  logger.fatal({ error }, 'Failed to start bot');
+  logger.fatal({ error: error?.message || error, stack: error?.stack }, 'Failed to start bot');
   process.exit(1);
 });

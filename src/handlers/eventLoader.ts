@@ -1,6 +1,6 @@
 import { readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import type { Client, ClientEvents } from 'discord.js';
 import { logger } from '../utils/logger.js';
 
@@ -14,7 +14,7 @@ export async function loadEvents(client: Client): Promise<void> {
 
   for (const file of eventFiles) {
     const filePath = join(eventsPath, file);
-    const eventModule = (await import(filePath)) as { default: unknown };
+    const eventModule = (await import(pathToFileURL(filePath).href)) as { default: unknown };
     const event = eventModule.default as { name: keyof ClientEvents; once?: boolean; execute: (...args: unknown[]) => void };
 
     if (event.once) {

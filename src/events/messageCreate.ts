@@ -2,9 +2,10 @@ import { Events } from 'discord.js';
 import type { Message } from 'discord.js';
 import { handleQuoteMessage } from '../services/quoteService.js';
 
-export const name = Events.MessageCreate;
-export const once = false;
-
-export async function execute(message: Message): Promise<void> {
-  await handleQuoteMessage(message);
-}
+export default {
+  name: Events.MessageCreate,
+  once: false,
+  async execute(message: Message): Promise<void> {
+    await handleQuoteMessage(message);
+  }
+};
