@@ -25,7 +25,7 @@ const categoryFolders = readdirSync(commandsPath, { withFileTypes: true }).filte
 
 for (const folder of categoryFolders) {
   const categoryPath = join(commandsPath, folder.name);
-  const commandFiles = readdirSync(categoryPath).filter((f) => f.endsWith('.ts') || f.endsWith('.js'));
+  const commandFiles = readdirSync(categoryPath).filter((f) => (f.endsWith('.ts') || f.endsWith('.js')) && !f.endsWith('.d.ts'));
 
   for (const file of commandFiles) {
     const filePath = join(categoryPath, file);
